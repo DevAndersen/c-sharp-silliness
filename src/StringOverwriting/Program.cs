@@ -1,4 +1,4 @@
-﻿// Does what it says on the tin. Nothing extraordinary going on here.
+// Does what it says on the tin. Nothing extraordinary going on here.
 Console.WriteLine($"> '{string.Empty}'");
 
 // Calls our magic method.
@@ -20,7 +20,7 @@ unsafe static void OverwriteString(string original, string replacement)
     *i = replacement.Length;
 
     // Copy the characters of the replacement string onto the original string.
-    // This can cause some very minor, such as a "Fatal error", if something important is located right after the string value in memory.
+    // This can cause some very minor issues, such as a "Fatal error", if something important is located right after the string value in memory.
     // The longer the replacement string, the higher the odds of this happening. But, as they say: no guts, no glory.
     Span<char> charSpan = new Span<char>(c, replacement.Length);
     replacement.AsSpan().CopyTo(charSpan);
