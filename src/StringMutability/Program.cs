@@ -15,13 +15,13 @@ static void InnocentMethod()
 {
     // We assume that a string with this exact value ís already interned.
     // That way, both this string as well as the const string will refer to the same location in memory.
-    string textOne = "Cupcake";
+    string sameText = "Cupcake";
 
     // Get a ReadOnlyMemory<char> for the string, change it to a Memory<char>, and get a span for it.
     // The whole "ReadOnly" thing is more what you'd call a "guideline" than an actual rule.
-    Span<char> span = MemoryMarshal.AsMemory(textOne.AsMemory()).Span;
+    Span<char> span = MemoryMarshal.AsMemory(sameText.AsMemory()).Span;
 
-    string textTwo = "Muffin";
+    string newText = "Muffin";
     span.Clear();
-    textTwo.CopyTo(span);
+    newText.CopyTo(span);
 }
