@@ -8,7 +8,7 @@ This repository contains various small projects that demonstrate ~~awful~~ *crea
 
 In C#, [strings are immutable](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/#immutability-of-strings), and [`const`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/const) fields may not be modified.
 
-But what if we change the value of a `const string` anyways?
+But can we change the value of a `const string` anyways?
 
 ### [StringOverwriting](./src/StringOverwriting/Program.cs)
 

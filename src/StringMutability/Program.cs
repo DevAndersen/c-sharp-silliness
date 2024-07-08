@@ -21,6 +21,7 @@ static void InnocentMethod()
     // The whole "ReadOnly" thing is more what you'd call a "guideline" than an actual rule.
     Span<char> span = MemoryMarshal.AsMemory(sameText.AsMemory()).Span;
 
+    // Copy the value of a new string onto the span over the old string.
     string newText = "Muffin";
     span.Clear();
     newText.CopyTo(span);
