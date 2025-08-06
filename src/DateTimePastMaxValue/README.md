@@ -14,7 +14,7 @@ If you manipulate a `DateTime` struct by setting all its bytes to `byte.MaxValue
 
 Specifically, the true maximum value is roughly 13.24.02, November 8, 14614. That's additional 4614 years of technically representable moments in time.
 
-To put that into perspective, going back 4614 years from today (in 2025) lands us in 2589 BC. That's roughly around the time that the [Great Pyramid of Giza](https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza) was being constructed. That's a lot of time which is technically possible to represent with a `DateTime`, but apparently, calculating things that go 12589 years into the future was deemend "unnecessary" by the developers of .NET.
+To put that into perspective, going back 4614 years from today (in 2025) lands us in 2589 BC. That's roughly around the time that the [Great Pyramid of Giza](https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza) was being constructed. That's a lot of time which is technically possible to represent with a `DateTime`, but apparently, calculating things that go 12589 years into the future was deemed "unnecessary" by the developers of .NET.
 
 You can actually perform comparisons on such values, and it will correctly state that the value is greater than `DateTime.MaxValue`. Which is a bit funny.
 
