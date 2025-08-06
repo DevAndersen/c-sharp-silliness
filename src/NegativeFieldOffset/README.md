@@ -4,4 +4,6 @@
 
 But can we work around this by defining a type with a negative `FieldOffsetAttribute` at runtime?
 
-**Conclusion:** No, if a negative number is supplied, an [`ArgumentException`](https://learn.microsoft.com/en-us/dotnet/api/system.argumentexception) will be thrown with the message "*Invalid custom attribute provided.*"
+## Conclusion
+
+No, if a negative number is supplied, an [`ArgumentException`](https://learn.microsoft.com/en-us/dotnet/api/system.argumentexception) will be thrown with the message "*Invalid custom attribute provided.*"

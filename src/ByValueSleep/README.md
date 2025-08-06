@@ -4,7 +4,9 @@ Value types are passed by value (shocking, I know), meaning that the time it tak
 
 If we were to create a really big struct, could we use this to approximate a 1-second delay simply by passing our struct around?
 
-**Conclusion:** Yes, we can approximate a 1-second sleep simply by measuring the time it takes to pass a really bug `struct` around.
+## Conclusion
+
+Yes, we can approximate a 1-second sleep simply by measuring the time it takes to pass a really bug `struct` around.
 
 With a 100,000 byte struct, we can narrow down the approximate number of times we need to pass it around before reaching a roughly 1-second delay.
 

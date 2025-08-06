@@ -2,9 +2,13 @@
 
 [`DateTime.MaxValue`](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.maxvalue) represents the date 23:59:59.9999999 UTC, December 31, 9999, the last representable instance in time before the year 10.000 begins.
 
-That's a conveniently elegant value, and clearly not representative of the actual maximum value of the `DateTime` data structure. So what happens if we force it beyond its intended maximum value?
+That's a conveniently elegant value, and clearly not representative of the actual maximum value of the `DateTime` data structure.
 
-**Conclusion:** While doable, there is very limited practical use for this.
+Can we force it beyond its intended maximum value, and if so, what happens?
+
+## Conclusion
+
+Yes, however there is very limited practical use for this.
 
 If you manipulate a `DateTime` struct by setting all its bytes to `byte.MaxValue`, you can get a `DateTime` that represents a date beyond `DateTime.MaxValue`.
 
