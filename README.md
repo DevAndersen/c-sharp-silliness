@@ -18,7 +18,7 @@ Creating a `DateTime` that exceeds `DateTime.MaxValue`.
 
 ### [ByValueSleep](./src/ByValueSleep)
 
-Approximating a 1-second sleep by passing a `struct` around.
+Approximating a 1-second sleep by passing a very large `struct` around.
 
 ## Failed projects
 
