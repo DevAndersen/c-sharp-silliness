@@ -20,7 +20,7 @@ You can actually perform comparisons on such values, and it will correctly state
 
 However, invoking method calls on such an object which return a new `DateTime`, e.g. `AddYears`, is likely to throw an `ArgumentOutOfRangeException` if, as is likely, the resulting `DateTime` represents a date outside of [`DateTime.MinValue` - `DateTime.MaxValue`].
 
-So while this technically allows you to represent an additional 4614 years worth of dates and times, performing any calculations on such an object is carries the risk of getting an `ArgumentOutOfRangeException` thrown your way, as punishment for your hubris.
+So while this technically allows you to represent an additional 4614 years worth of dates and times, performing any calculations on such an object carries the risk of getting an `ArgumentOutOfRangeException` thrown your way, as punishment for your hubris.
 
 Doable? Yes.
 
