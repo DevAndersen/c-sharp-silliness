@@ -30,7 +30,7 @@ double finalMeasure = StructSleeper.Sleep(loops);
 Console.WriteLine($"Sleep took {finalMeasure} seconds, which is reasonably close to a second");
 
 /// <summary>
-/// Allows for putting the current thread to sleep by spending time passing large value objects around.
+/// Contains logic for putting the current thread to sleep by spending time passing a very large struct around.
 /// </summary>
 public static class StructSleeper
 {
