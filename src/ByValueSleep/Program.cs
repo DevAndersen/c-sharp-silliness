@@ -7,7 +7,7 @@ int attempt = 1;
 // The maximum number of attempts we'll do. We don't want to be here all day.
 int maxAttempts = 25;
 
-// The number of we'll pass the struct around for. Let's start with 100, it's a nice round number.
+// The number of times we'll pass the struct per attempt. Let's start with 100, that's a nice round number.
 int loops = 100;
 
 // The number of seconds it took to pass our struct {loop} number of times.
