@@ -6,7 +6,7 @@ If we were to create a really big struct, could we use this to approximate a 1-s
 
 ## Conclusion
 
-Yes, we can approximate a 1-second sleep simply by measuring the time it takes to pass a really bug `struct` around.
+Yes, we can approximate a 1-second sleep simply by measuring the time it takes to pass a really big `struct` around.
 
 With a 100,000 byte struct, we can narrow down the approximate number of times we need to pass it around before reaching a roughly 1-second delay.
 
