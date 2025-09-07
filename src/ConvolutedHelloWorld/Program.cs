@@ -1,13 +1,34 @@
 ﻿using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 
 char[] text = [.. Hell(), O1(), Comma(), Space(), W(), O2(), R(), L(), D(), ExclamationMark()];
 WriteLine(text);
 
 char[] Hell()
 {
-    return ['_', '_', '_', '_'];
+    int veryBigNumber = 270_291_474; // Todo: Find a way to land at this number.
+
+    // This gives us the number 270,291,474, which, if represented as a 32-bit integer value,
+    // can be hashed using MD5 to yield a digest that, if read as UTF-8 text, just so happens to start with the four letters "hell".
+    // And how do I know this? Because I bruteforced it. Took one of my CPU cores around 40 seconds before it found a match.
+    // Also, having some part of the code literally return "hell" seems fitting, considering the absolute abomination that is this project.
+    byte[] hellBytes = MD5.HashData(BitConverter.GetBytes(veryBigNumber));
+
+    // Now, the "h" is lower-case, so we'll need to make it upper-case.
+    // Here we can use a really handy design feature of ASCII/Unicode: the binary difference between any
+    // Latin letter's upper- and lower case variants is a single bit (the sixth bit, to be precise).
+    // We can therefore take any Latin upper-case letter with its lower-case counterpart, XOR them to get the case bit,
+    // And then binary AND it with any Latin letter to make it upper-case.
+    // Just gotta add a cast because XOR'ing two chars returns an int.
+    // The unchecked keyword is also necessary, because we're technically converting a negative number to an unsigned byte.
+    hellBytes[0] &= unchecked((byte)~('A' ^ 'a'));
+
+    // Now we just need to turn out four first bytes into a string and return it.
+    // But, since .NET uses UTF-16, we'll need to stretch the four first characters to take up two bytes each,
+    // and then turn that into a string. Let's use a bit of LINQ to spice things up.
+    return [.. hellBytes.Take(4).Select(x => (char)x)];
 }
 
 char O1()
