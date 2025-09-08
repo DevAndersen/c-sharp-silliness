@@ -19,15 +19,14 @@ char[] Hell()
     // Now, the "h" is lower-case, so we'll need to make it upper-case.
     // Here we can use a really handy design feature of ASCII/Unicode: the binary difference between any
     // Latin letter's upper- and lower case variants is a single bit (the sixth bit, to be precise).
-    // We can therefore take any Latin upper-case letter with its lower-case counterpart, XOR them to get the case bit,
-    // And then binary AND it with any Latin letter to make it upper-case.
-    // Just gotta add a cast because XOR'ing two chars returns an int.
-    // The unchecked keyword is also necessary, because we're technically converting a negative number to an unsigned byte.
+    // We can therefore take any Latin upper-case letter, XOR it with its lower-case counterpart to get the case bit,
+    // and then AND that with any other Latin letter to make it upper-case.
+    // Just gotta add a cast because XOR'ing two chars returns an int, and also wrapt in with the "unchecked" keyword since we're converting a negative int to a byte.
     hellBytes[0] &= unchecked((byte)~('A' ^ 'a'));
 
-    // Now we just need to turn out four first bytes into a string and return it.
-    // But, since .NET uses UTF-16, we'll need to stretch the four first characters to take up two bytes each,
-    // and then turn that into a string. Let's use a bit of LINQ to spice things up.
+    // Now we just need to turn our four first bytes into chars, and return them.
+    // But, since .NET uses UTF-16, we'll need to cast the four first bytes as chars,
+    // and then turn that as a char array. A pinch of LINQ, a dash of collection expressions, and the meal is ready to be served!
     return [.. hellBytes.Take(4).Select(x => (char)x)];
 }
 
