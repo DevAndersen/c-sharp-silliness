@@ -121,7 +121,7 @@ char O2()
 char R()
 {
     // First, let's create a string. Nothing out of the ordinary here.
-    // We'll even make it a compile time constant, so you know it's super-duper not gonna change.
+    // We'll even make it a compile-time constant, so you know it's super-duper not gonna change.
     const string Text = "Please don't mutate me";
 
     // Next, let's create a ReadOnlyMemory over the text. Again, perfectly normal.
