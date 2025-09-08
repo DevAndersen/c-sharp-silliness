@@ -12,7 +12,7 @@ char[] Hell()
 
     // This gives us the number 270,291,474, which, if represented as a 32-bit integer value,
     // can be hashed using MD5 to yield a digest that, if read as UTF-8 text, just so happens to start with the four letters "hell".
-    // And how do I know this? Because I bruteforced it. Took one of my CPU cores around 40 seconds before it found a match.
+    // How do I know this? Because I bruteforced it. Took one of my CPU cores around 40 seconds before it found a match.
     // Also, having some part of the code literally return "hell" seems fitting, considering the absolute abomination that is this project.
     byte[] hellBytes = MD5.HashData(BitConverter.GetBytes(veryBigNumber));
 
@@ -133,13 +133,13 @@ char R()
     Span<char> span = MemoryMarshal.AsMemory(readOnlyMemory).Span;
 
     // And finally, we'll change the first character in the span to the lower-case letter 'r'.
-    // Mutating string is a big no-no! This is technically data corruption.
+    // String mutation is a big no-no in .NET, so this technically qualifies as data corruption.
     // Luckily, we don't use this string elsewhere, so we're technically good.
     span[0] = 'r';
 
-    // And the cherry on top: because this string is known at compile time, it gets interned.
-    // This means that all instances of this string point to the same location in memory.
-    // We just mutated the underlying buffer, meaning that all other instances of this string were also mutated. Spooky action at a distance!
+    // And the cherry on top: because the string is known at compile time, it gets interned.
+    // This means that all strings with that exact same content will all point to the same location in memory.
+    // And since we just mutated the underlying buffer, that means we implicitly also mutated all other instances of that string. Spooky action at a distance!
     // So while it looks like we are returning a 'P', we are actually returning an 'r'. Highly illegal stuff, don't tell your parents.
     return "Please don't mutate me"[0];
 }
