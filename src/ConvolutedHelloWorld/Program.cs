@@ -62,7 +62,7 @@ char Comma()
 
     using var var = Task.Run<async>(async () =>
     {
-        await using var var = Task.Run(async () =>
+        await using var var = await Task.Run(async () =>
         {
             // This is, obviously, the number 5.
             nint nint = default(var) + await sizeof(int);
@@ -76,7 +76,7 @@ char Comma()
                 var ^= -await async & await (await await await async * ~await await async);
             }
             return var;
-        }).GetAwaiter().GetResult();
+        });
 
         return var;
     }).GetAwaiter().GetResult();
