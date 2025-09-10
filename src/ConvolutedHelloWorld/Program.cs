@@ -1,11 +1,17 @@
-﻿using System.Reflection;
+﻿// You know it's gonna be good when the code starts with some warning suppressions.
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
+#pragma warning disable IDE1006 // Naming Styles
+
+using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 char[] text = [.. Hell(), O1(), Comma(), Space(), W(), O2(), R(), L(), D(), ExclamationMark()];
 WriteLine(text);
 
+// Topic: TBD.
 char[] Hell()
 {
     int veryBigNumber = 270_291_474; // Todo: Find a way to land at this number.
@@ -30,21 +36,61 @@ char[] Hell()
     return [.. hellBytes.Take(4).Select(x => (char)x)];
 }
 
+// Topic: TBD.
 char O1()
 {
     return '_';
 }
 
+// Topic: Duck typing, contextual keywords.
 char Comma()
 {
-    return '_';
+    // Some C# language features, such as "foreach" and "await", are implemented via duck typing.
+    // This means that, as long as a type defines the correct members, you can use it for those features.
+    // Going further, you can implement these on existing types by using extension methods.
+    // So, what if we made good old int both awaitable and enumerable?
+
+    // Interestingly, the "using" keyword when used in using statements typically doesn't support duck typing.
+    // If you want to use it, the type has to actually implement IDisposable or IAsyncDisposable.
+    // However, because ref structs couldn't implement interfaces up until C# 13 (and still can't be cast as an interface as that would cause them to be boxed),
+    // there's a special case which allows duck typing the IDisposable or IAsyncDisposable pattern when doing so on a ref struct.
+
+    // Another fun fact about C#: some keywords are "contextual".
+    // This means that they can sometimes be used elsewhere in code, for example as identifiers.
+    // So, not only can you name a variable things like "var" or "async", but you can also name a type "var" or "async".
+    // This is one of the reasons why you shouldn't have all-lowercase type names.
+
+    using var var = Task.Run<async>(async () =>
+    {
+        await using var var = Task.Run(async () =>
+        {
+            // This is, obviously, the number 5.
+            nint nint = default(var) + await sizeof(int);
+
+            async var = default;
+            // This is basically just a wonky looking for-loop. Sort of. Trust me, it just works.
+            await foreach (int async in await await (int)nint)
+            {
+                // Also, turns out that if you have an awaitable type which, when awaited, returns an awaited type (e.g. itself),
+                // you can chain as many "await" keywords as you want.
+                var ^= -await async & await (await await await async * ~await await async);
+            }
+            return var;
+        }).GetAwaiter().GetResult();
+
+        return var;
+    }).GetAwaiter().GetResult();
+
+    return var;
 }
 
+// Topic: TBD.
 char Space()
 {
     return '_';
 }
 
+// Topic: Reflection, IL emit.
 char W()
 {
     // For this letter, we'll simply write a method that returns the character.
@@ -88,6 +134,7 @@ char W()
     return (char)type.GetMethod(MethodName)!.Invoke(null, [])!;
 }
 
+// Topic: IEEE 754, bitwise operators.
 char O2()
 {
     // First, let's take the lower-case letters 'i' and 'w', and melt them together.
@@ -118,6 +165,7 @@ char O2()
     return (char)~~(~~~nan[^3] & nan[^2] ^ nan[^1]);
 }
 
+// Topic: String mutation.
 char R()
 {
     // First, let's create a string. Nothing out of the ordinary here.
@@ -144,21 +192,25 @@ char R()
     return "Please don't mutate me"[0];
 }
 
+// Topic: TDB.
 char L()
 {
     return '_';
 }
 
+// Topic: TBD.
 char D()
 {
     return '_';
 }
 
+// Topic: TBD.
 char ExclamationMark()
 {
     return '_';
 }
 
+// Topic: Function pointers.
 unsafe void WriteLine(char[] text)
 {
     // And now, all we need to do is to write our string to the console.
@@ -166,4 +218,80 @@ unsafe void WriteLine(char[] text)
     // Let's create a function pointer and invoke it that way. After all, needless complexity is the name of the game here!
     delegate*<char[], void> writeLinePtr = &Console.WriteLine;
     writeLinePtr(text);
+}
+
+/// <summary>
+/// Just a simple record struct that wraps an <see cref="int"/>. Don't mind the name.
+/// </summary>
+/// <param name="await"></param>
+record struct async(int await)
+{
+    public static implicit operator async(int await) => new async(await);
+
+    public static implicit operator int(async await) => await.await;
+
+    public static implicit operator var(async await) => new var(await.await);
+
+    public static implicit operator async(var var) => new async(var);
+}
+
+/// <summary>
+/// Nothing to see here, just an innocent little ref struct with a perfectly ordinary name.
+/// </summary>
+ref struct var
+{
+    private int _number;
+
+    public var(int number)
+    {
+        _number = number;
+    }
+
+    public static implicit operator char(var var) => (char)var._number;
+
+    public readonly void Dispose() { }
+
+    public readonly ValueTask DisposeAsync() => ValueTask.CompletedTask;
+}
+
+/// <summary>
+/// An async enumerator that wraps around an <see cref="int"/>.
+/// </summary>
+/// <param name="Number"></param>
+record class AsyncEnumerator(int Number)
+    : IAsyncEnumerator<int>
+{
+    public int Current { get; private set; } = -1;
+
+    public ValueTask<bool> MoveNextAsync() => ValueTask.FromResult(++Current < Number);
+
+    public ValueTask DisposeAsync() => ValueTask.CompletedTask;
+}
+
+static class Extensions
+{
+    /// <summary>
+    /// Makes <see cref="int"/> enumerable (<c>foreach</c>).
+    /// I decided to make it enumerate up to itself, exclusively, meaning that throwing 5 into a foreach returns [0, 1, 2, 3, 4].
+    /// </summary>
+    /// <param name="number"></param>
+    /// <returns></returns>
+    public static IEnumerator<int> GetEnumerator(this int number) =>
+        Enumerable.Range(default, number).GetEnumerator();
+
+    /// <summary>
+    /// Makes <see cref="int"/> awaitable (<c>await</c>).
+    /// </summary>
+    /// <param name="number"></param>
+    /// <returns></returns>
+    public static ValueTaskAwaiter<int> GetAwaiter(this int number) =>
+        ValueTask.FromResult(number + 1).GetAwaiter();
+
+    /// <summary>
+    /// Makes <see cref="int"/> asynchronously enumerable (<c>await foreach</c>).
+    /// </summary>
+    /// <param name="number"></param>
+    /// <returns></returns>
+    public static IAsyncEnumerator<int> GetAsyncEnumerator(this int number) =>
+        new AsyncEnumerator(number - 1);
 }
