@@ -1,4 +1,4 @@
-﻿// You know it's gonna be good when the code starts with some warning suppressions.
+﻿// You know it's gonna be good when the code begins with several suppressions.
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
 
@@ -169,7 +169,8 @@ file partial class Program
         Half half = BitConverter.Int16BitsToHalf(s);
 
         // According to IEEE 754, if bytes 2 through 9 are all set to 1, that number is not a number. Literally, it's NaN.
-        // You'd normally only end up with NaN if you divide zero with zero, but we got there via binary reinterpretation instead.
+        // You'd normally only end up with NaN if you divide zero by zero, but we got there via binary reinterpretation instead.
+        // Note: This only works with floating point numeric types. If you divide a non-floating point number by zero, you'll instead get a nice and pretty DivideByZeroException.
         string nan = half.ToString();
 
         // And finally, let's index into the "NaN" string, and shuffle the bytes around until we get something useful.
