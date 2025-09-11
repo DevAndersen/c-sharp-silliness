@@ -250,7 +250,7 @@ file partial class Program
         // And now, all we need to do is to write our string to the console.
         // We'll of course use Console.WriteLine for this, but calling it directly seems rather anticlimactic, doesn't it?
         // Let's create a function pointer and invoke it that way. After all, needless complexity is the name of the game here!
-        delegate*<char[], void> writeLinePtr = &Console.WriteLine;
+        delegate* managed<char[], void> writeLinePtr = &Console.WriteLine;
         writeLinePtr(text);
     }
 }
