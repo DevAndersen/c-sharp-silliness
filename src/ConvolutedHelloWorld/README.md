@@ -10,7 +10,7 @@ Goals:
 
 - Print the string `"Hello, World!"` to the console.
 - Avoid reusing the same "tricks", as much as is reasonably possible.
-- Code that does nothing is not allowed. That means, no methods or loops that just wastes time without coming closer to the goal.
+- Each line of code must do something productive. That means, methods or loops that do not contribute to the final result are prohibited.
 - Everything must be done entirely within the Base Class Library (BCL). No NuGet packages, no P/Invoke, no depending on the underlying OS or environment.
 - Everything else is fair game, no matter if it's bad practice, stupid, or borderline illegal.
 
