@@ -70,9 +70,9 @@ file partial class Program
         // So, not only can you name a variable things like "var" or "async", but you can also name a type "var" or "async".
         // This is one of the reasons why you shouldn't have all-lowercase type names.
 
-        using var var = Task.Run<async>(async () =>
+        using scoped var var = Task.Run<async>(async () =>
         {
-            await using var var = await Task.Run(async () =>
+            await using var var = await Task.Run(static async () =>
             {
                 // This is, obviously, the number 5.
                 nint nint = default(var) + await sizeof(int);
