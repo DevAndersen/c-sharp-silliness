@@ -1,14 +1,17 @@
-﻿// You know it's gonna be good when the code begins with several suppressions.
+﻿// You know it's gonna be good when the code begins by suppressing several warnings.
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
 
+using System.Buffers.Binary;
+using System.Globalization;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Text;
 
-WriteLine([.. Hell(), O1(), Comma(), Space(), W(), O2(), R(), L(), D(), ExclamationMark()]);
+WriteLine([.. Hell(), O1(), Comma(), Space(), W(), O2(), R(), .. Ld(), ExclamationMark()]);
 
 file partial class Program
 {
@@ -41,12 +44,40 @@ file partial class Program
     }
 
     /// <summary>
-    /// Topic: TBD.
+    /// Topic: Text parsing, text normalization.
     /// </summary>
     /// <returns></returns>
     private static char O1()
     {
-        return '_';
+        // Dynamic is a bizarre aspect of C#.
+        // It essentially tells the compiler to just trust whatever you've written,
+        // and as long as it's technically valid C# code, it'll just go with it.
+
+        // We can use/abuse this to turn any valid identifier into a string using this cheeky little nameof-trick.
+        // And, because underscore is a valid identifier, this works even though the type "dynamic" doesn't have a member named "_".
+        dynamic dyn;
+        string underscore = nameof(dyn._);
+
+        // Next, we bitshift '_' one to the left, and we get '¾', the character for three quarters.
+        char threeQuarters = (char)(underscore[0] << 1);
+
+        // And, because the BCL has logic for just about everything imaginable,
+        // we can simply parse that character into a double with the value of 0.75.
+        double zeroPointSevenFive = CharUnicodeInfo.GetNumericValue(threeQuarters);
+
+        // Next up, let's convert that 0.75 to 75, and use linear interpolation (lerp)
+        // to get the value that is 75% of the way between 75 and 255.
+        char upperCaseCharWithDiacritics = (char)double.Lerp(zeroPointSevenFive * 100, byte.MaxValue, zeroPointSevenFive);
+
+        // This gives us 'Ò'.
+        // Hmm, we're getting closer to the 'o' we're looking for, but we're not quite there yet.
+        // We need to adjust the casing, and then get rid of the diacritics.
+        // We'll do the easy one first, and lower-case it.
+        string lowerCaseCharWithDiacritics = char.ToLower(upperCaseCharWithDiacritics).ToString();
+
+        // Now we can use character normalization to essentially split the character into its normalized latin variant and its diacritic.
+        // We then simply take the first character in that string, which is the latin letter 'o', and we're done!
+        return lowerCaseCharWithDiacritics.Normalize(NormalizationForm.FormD)[0];
     }
 
     /// <summary>
@@ -216,21 +247,52 @@ file partial class Program
     }
 
     /// <summary>
-    /// Topic: TDB.
+    /// Topic: Integer literals, UTF-8 string literals, field overlap.
     /// </summary>
     /// <returns></returns>
-    private static char L()
+    private static char[] Ld()
     {
-        return '_';
-    }
+        // C# lets you express integer values in more than just decimal (base 10).
+        // You can use hexadecimal (base 16), which will be familiar to anyone who's familiar with CSS or similar (albeit with the "0x" prefix instead of "#").
+        int i = 0x6c00;
 
-    /// <summary>
-    /// Topic: TBD.
-    /// </summary>
-    /// <returns></returns>
-    private static char D()
-    {
-        return '_';
+        // You can also use binary (base 2). This can seem rather excessive,
+        // but I find it useful when working with with bit fields (enums where individual bits of the number represent boolean flags).
+        // Come to think of it, I should probably have demonstrated bit fields rather than just mentioning them. Oh well.
+        int j = 0b_0110_0011_1111_1111_1111_1111_1110_1010;
+
+        // Normally, C# strings and chars are UTF-16, however with the "u8" suffix you can also define UTF-8 literals.
+        // These do have to be assigned to a ReadOnlySpan<byte>.
+        // So for strings known at compile time, you no longer need good ol' Encoding.UTF8 if all you want is the UTF-8 version.
+        ReadOnlySpan<byte> text = "This is a UTF8 string "u8;
+
+        // Now let's add our numbers together, as well as the length of out UTF-8 string.
+        int sum = i + j + text.Length;
+
+        // This struct has three fields, a 32-bit int and two 16-bit ushorts.
+        // However, using the FieldOffset attribute, the int overlaps in memory with the ushorts.
+        // This means the ushorts essentially point to the first and last 16-bits of the 32-bit integer, respectively.
+        // Easy reinterpretation of data, with no additional overhead or calculations.
+        IntWithAddressableShorts result = new IntWithAddressableShorts
+        {
+            I32 = sum
+        };
+
+        Span<byte> buffer = stackalloc byte[2];
+
+        // Now we can just grab our two 16-bit ushorts out of the struct, however their bytes are in the wrong order.
+        // This is called endianness, and while you could probably debate the merits of both until the end of time,
+        // I'm just here for my two ushorts.
+        BinaryPrimitives.WriteUInt16BigEndian(buffer, result.U16a);
+        char l = (char)BinaryPrimitives.ReadUInt16LittleEndian(buffer);
+
+        BinaryPrimitives.WriteUInt16BigEndian(buffer, result.U16b);
+        char d = (char)BinaryPrimitives.ReadUInt16LittleEndian(buffer);
+
+        // And voila, we're all done.
+        // Come to think of it, I wonder if there's an easier way of writing a method in C# that returns the chars 'l' and 'd'...
+        // Nah, doubt it. This is surely the most straightforward way. Surely. Surely...
+        return [l, d];
     }
 
     /// <summary>
@@ -254,6 +316,22 @@ file partial class Program
         delegate* managed<char[], void> writeLinePtr = &Console.WriteLine;
         writeLinePtr(text);
     }
+}
+
+/// <summary>
+/// A struct that wraps an int, with two ushorts that each overlap one half of the int in memory.
+/// </summary>
+[StructLayout(LayoutKind.Explicit)]
+struct IntWithAddressableShorts
+{
+    [field: FieldOffset(0)]
+    public int I32 { get; set; }
+
+    [field: FieldOffset(0)]
+    public ushort U16a { get; set; }
+
+    [field: FieldOffset(sizeof(char))]
+    public ushort U16b { get; set; }
 }
 
 /// <summary>
