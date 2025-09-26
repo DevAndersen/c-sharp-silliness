@@ -101,6 +101,15 @@ file partial class Program
         // So, not only can you name a variable things like "var" or "async", but you can also name a type "var" or "async".
         // This is one of the reasons why you shouldn't have all-lowercase type names.
 
+        // The following abomination was inspired by a tweet by Jared Parsons (C# compiler lead), in which he stated that the following can be valid C# code.
+        //
+        // public class var {
+        //    async async async(async async) => await async;
+        // }
+        //
+        // You can see him explain it here: https://www.youtube.com/watch?v=jaPk6Nt33KM&t=228
+        // So, in short, blame Parsons for teaching us how to abuse the C# language. He started it!
+
         using scoped var var = Task.Run<async>(async () =>
         {
             await using var var = await Task.Run(static async () =>
@@ -108,7 +117,10 @@ file partial class Program
                 // This is, obviously, the number 5.
                 nint nint = default(var) + await sizeof(int);
 
+                // This is neither asynchronous nor a variable of a compiler-inferred type, despite using the words "async" and "var".
+                // But the "default" (which is a non-contextual keyword) does what you'd expect (assuming you expect "async" to be the name of a type).
                 async var = default;
+                
                 // This is basically just a wonky looking for-loop. Sort of. Trust me, it just works.
                 await foreach (int async in await await (int)nint)
                 {
@@ -177,7 +189,8 @@ file partial class Program
 
         // With all that done, we simply need to invoke our newly generated method, and return the returned char.
         // Let's also suppress those pesky null warnings. Shut up, compiler, I know what I'm doing!
-        // Fun fact: the null-forgiving operator is also known as the "dammit" operator, since you're essentially telling the compiler "just do it, dammit".
+        // Fun fact: the null-forgiving operator is informally known as the "damn-it" or "dammit" operator, since it's essentially telling the compiler "just do it, dammit".
+        // Microsoft might deny this, but we all know it's the truth.
         return (char)type.GetMethod(MethodName)!.Invoke(null, [])!;
     }
 
@@ -212,7 +225,7 @@ file partial class Program
         // Similarly, using it an even number of times does nothing, as it just flips the bits back to their initial state.
 
         // And, what do you know, we bit manipulated the characters of "NaN" into a lower-case 'o'.
-        // Turns out you really can do anything if you set your mind to it.
+        // Turns out you really can do anything if you set your mind to it, and don't mind writing a bit of dodgy-looking code to make it work.
         return (char)~~(~~~nan[^3] & nan[^2] ^ nan[^1]);
     }
 
@@ -320,6 +333,7 @@ file partial class Program
 
 /// <summary>
 /// A struct that wraps an int, with two ushorts that each overlap one half of the int in memory.
+/// Did I name it that because "addressable shorts" sounds funny? Maybe...
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
 struct IntWithAddressableShorts
@@ -335,7 +349,8 @@ struct IntWithAddressableShorts
 }
 
 /// <summary>
-/// Just a simple record struct that wraps an <see cref="int"/>. Don't mind the name.
+/// Just a simple record struct that wraps an <see cref="int"/>.
+/// Don't mind the name. Nothing to see here, move along!
 /// </summary>
 /// <param name="await"></param>
 record struct async(int await)
