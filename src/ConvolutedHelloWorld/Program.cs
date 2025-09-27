@@ -192,6 +192,11 @@ file partial class Program
         // Fun fact: the null-forgiving operator is informally known as the "damn-it" or "dammit" operator, since it's essentially telling the compiler "just do it, dammit".
         // Microsoft might deny this, but we all know it's the truth.
         return (char)type.GetMethod(MethodName)!.Invoke(null, [])!;
+
+        // So, after having written all this, I found out that there's a type called "DynamicMethod",
+        // which seemingly just creates a type at runtime without needing to create the surrounding assembly-module-type structure for it.
+        // So, this method could've been made quite a bit shorter...
+        // Oh well, not gonna bother changing it now.
     }
 
     /// <summary>
