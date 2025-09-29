@@ -32,6 +32,10 @@ These are projects that did not work out (which is probably for the best).
 
 Extending a struct's memory layout backwards from its starting location.
 
+### [InstanceOfVoid](./src/InstanceOfVoid)
+
+Creating an object of type `System.Void`.
+
 ## License
 
 The code in this repository is licensed under the [MIT License](./LICENSE).
