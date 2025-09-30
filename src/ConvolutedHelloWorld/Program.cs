@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 
-WriteLine([.. Hell(), O1(), Comma(), Space(), W(), O2(), R(), .. Ld(), ExclamationMark()]);
+PrintLine([.. Hell(), O1(), Comma(), Space(), W(), O2(), R(), .. Ld(), ExclamationMark()]);
 
 file partial class Program
 {
@@ -338,7 +338,7 @@ file partial class Program
     /// Topic: Function pointers.
     /// </summary>
     /// <param name="text"></param>
-    private static unsafe void WriteLine(char[] text)
+    private static unsafe void PrintLine(char[] text)
     {
         // And now, all we need to do is to write our string to the console.
         // We'll of course use Console.WriteLine for this, but calling it directly seems rather anticlimactic, doesn't it?
