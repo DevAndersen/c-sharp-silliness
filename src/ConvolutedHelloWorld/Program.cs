@@ -2,6 +2,7 @@
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
 
+using Microsoft.Win32.SafeHandles;
 using System.Buffers.Binary;
 using System.Globalization;
 using System.Reflection;
@@ -326,12 +327,33 @@ file partial class Program
     }
 
     /// <summary>
-    /// Topic: TBD.
+    /// Topic: Pointers, string memory layout.
     /// </summary>
     /// <returns></returns>
-    private static char ExclamationMark()
+    private unsafe static char ExclamationMark()
     {
-        return '_';
+        // .NET comes with a lot of types (3609 by my counting, as of .NET 9.0.9).
+        // Some have short names, like the beloved "GC" (short for Garbage Collector) at just two characters.
+        // On the other end of the spectrum, we have the monstrous "DynamicPartitionEnumeratorForIndexRange_Abstract`2"
+        // (the `2 indicates that it has two generic type parameters).
+
+        // Somewhere in the middle, we have "SafeHandleZeroOrMinusOneIsInvalid", clocking in at a very convenient 33 characters.
+        // Can you guess what Unicode 33 is? Did the name of this method give it away?
+
+        // Alright, let's create a string which contains the name of SafeHandleZeroOrMinusOneIsInvalid,
+        // and then get an unsafe pointer to the first character of that string.
+        fixed (char* ptr = nameof(SafeHandleZeroOrMinusOneIsInvalid))
+        {
+            // Interesting thing about strings, the length of a string is located right before the character buffer, stored as a little endian 32-bit integer.
+            // I don't believe this is part of the .NET spec, so this might not be correct for all .NET runtime implementations.
+            // But, frankly, I don't really care. If it works, it works.
+
+            // Regardless, we simply need to step four bytes backwards, and then we can access the string's length.
+            // And since we're already working with a char pointer, we don't even need to cast it to anything, we can simply dereference it.
+            // And there you have it, an exclamation mark "extracted" from the name of a safe handle class
+            // (which also happens to be used to represent pointers and whatnot).
+            return *(ptr - sizeof(int) / sizeof(char));
+        }
     }
 
     /// <summary>
