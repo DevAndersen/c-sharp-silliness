@@ -65,7 +65,7 @@ file partial class Program
         char threeQuarters = (char)(underscore[0] << 1);
 
         // And, because the BCL has logic for just about everything imaginable,
-        // we can actually parse that character into a double with the value of 0.75.
+        // we can actually parse that character as a double with the value of 0.75.
         double zeroPointSevenFive = CharUnicodeInfo.GetNumericValue(threeQuarters);
 
         // Next up, let's convert that 0.75 to 75, and use linear interpolation (lerp)
