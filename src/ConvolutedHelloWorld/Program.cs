@@ -53,8 +53,11 @@ file partial class Program
         // It essentially tells the compiler to just trust whatever you've written,
         // and as long as it's technically valid C# code, it'll just go with it.
 
-        // We can use/abuse this to turn any valid identifier into a string using this cheeky little nameof-trick.
+        // We can use/abuse this to turn any valid identifier into a compile-time constant string using this cheeky little nameof-trick.
         // And, because underscore is a valid identifier, this works even though the type "dynamic" doesn't have a member named "_".
+
+        // Sidenote: Unless you're a professional madman (like I am), you should never use dynamic.
+        // It causes far more problems than it solves, makes debugging and troubleshooting needlessly painful, and there are always better alternatives
         dynamic dyn;
         string underscore = nameof(dyn._);
 
@@ -62,14 +65,22 @@ file partial class Program
         char threeQuarters = (char)(underscore[0] << 1);
 
         // And, because the BCL has logic for just about everything imaginable,
-        // we can simply parse that character into a double with the value of 0.75.
+        // we can actually parse that character into a double with the value of 0.75.
         double zeroPointSevenFive = CharUnicodeInfo.GetNumericValue(threeQuarters);
 
         // Next up, let's convert that 0.75 to 75, and use linear interpolation (lerp)
         // to get the value that is 75% of the way between 75 and 255.
+        // You ask why we're doing this? Because it gives the answer we're looking for. Stop asking questions!
         char upperCaseCharWithDiacritics = (char)double.Lerp(zeroPointSevenFive * 100, byte.MaxValue, zeroPointSevenFive);
 
-        // This gives us 'Ò'.
+        // Sidenote: The venerable Math and MathF classes are technically soft-deprecated.
+        // They're not getting deleted, but it is recommended that you use the static methods on the numeric types themselves.
+        // The .NET team just haven't really communicated this.
+        // This is in order to improve clarity, as you make it explicit which data type you're working with.
+        // Math and MathF also aren't getting expanded with new methods, unlike the static methods on the numeric types.
+        // For example, Math.Lerp does not exist.
+
+        // Regardless, our little lerp trick gives us the character 'Ò'.
         // Hmm, we're getting closer to the 'o' we're looking for, but we're not quite there yet.
         // We need to adjust the casing, and then get rid of the diacritics.
         // We'll do the easy one first, and lower-case it.
@@ -274,9 +285,10 @@ file partial class Program
         // You can use hexadecimal (base 16), which will be familiar to anyone who's familiar with CSS or similar (albeit with the "0x" prefix instead of "#").
         int i = 0x6c00;
 
-        // You can also use binary (base 2). This can seem rather excessive,
-        // but I find it useful when working with with bit fields (enums where individual bits of the number represent boolean flags).
+        // You can also use binary (base 2), by prefixing the number with "0b". This can seem rather excessive,
+        // but I find it useful when working with bit fields (enums where each individual bit of the number represents a boolean flags).
         // Come to think of it, I should probably have demonstrated bit fields rather than just mentioning them. Oh well.
+        // Sidenote: You can use underscores to improve readability of numeric literal, including floating point literals. The compiler just ignores them.
         int j = 0b_0110_0011_1111_1111_1111_1111_1110_1010;
 
         // Normally, C# strings and chars are UTF-16, however with the "u8" suffix you can also define UTF-8 literals.
