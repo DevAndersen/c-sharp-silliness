@@ -190,7 +190,8 @@ file static partial class Program
         Match match = Regex.Match(expressionString, pattern);
 
         // We now have the character '+' from our expression in the '_' match group, which we can simply extract.
-        string plus = match.Groups["_"].Value;
+        // I also used a bit of string interpolation, because now it looks like a face. "{'_'}"
+        string plus = match.Groups[$"{'_'}"].Value;
 
         // Now to turn a plus into a space. Luckily for us, that's exactly how URLs encode strings.
         // So we can just use WebUtility to "decode" the plus into a space, and grab the first (and only) character from that string.
