@@ -344,7 +344,8 @@ file static partial class Program
         // However, using the FieldOffset attribute, the int overlaps in memory with the ushorts.
         // This means the ushorts essentially point to the first and last 16-bits of the 32-bit integer, respectively.
         // Easy reinterpretation of data, with no additional overhead or calculations.
-        IntWithAddressableShorts result = new IntWithAddressableShorts
+        // Also, a great opportunity to use with expressions. Sure, it's not exactly necessary, but then again, none of this is even remotely necessary.
+        IntWithAddressableShorts result = default(IntWithAddressableShorts) with
         {
             I32 = sum
         };
