@@ -189,7 +189,7 @@ file static partial class Program
         // Good heavens, would you look at the time? It's RegEx-o'-clock!
         Match match = Regex.Match(expressionString, pattern);
 
-        // We now have the character '+' from our expression in the '_' match group, which we can simply extract.
+        // We now have the character '+' from our expression, stored in the '_' match group, which we can simply extract.
         // I also used a bit of string interpolation, because now it looks like a face. "{'_'}"
         string plus = match.Groups[$"{'_'}"].Value;
 
