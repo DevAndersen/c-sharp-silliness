@@ -5,16 +5,19 @@
 using Microsoft.Win32.SafeHandles;
 using System.Buffers.Binary;
 using System.Globalization;
+using System.Linq.Expressions;
+using System.Net;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 PrintLine([.. Hell(), O1(), Comma(), Space(), W(), O2(), R(), .. Ld(), ExclamationMark()]);
 
-file partial class Program
+file static partial class Program
 {
     /// <summary>
     /// Topic: TBD.
@@ -150,12 +153,48 @@ file partial class Program
     }
 
     /// <summary>
-    /// Topic: TBD.
+    /// Topic: Expressions, regular expressions, Unicode character literals, URL encoding.
     /// </summary>
     /// <returns></returns>
     private static char Space()
     {
-        return '_';
+        // Expressions are pretty nifty. They essentially describe logic in an abstract way,
+        // which you can then compile into an invokable delegate, or you can parse it and use it
+        // elsewhere. For example, Entity Framework tarnslates expressions to SQL.
+        // Here is a simple expression, which just adds w to the input number.
+        Expression<Func<int, int>> exp = (number) => number + 2;
+
+        // Now we ToString() the expression to get the the C# syntax of the expression as a string.
+        // I initially just made the expression body "2 + 2", but the C# compiler then realizes it can be lowered to "4",
+        // so we have to use at least one non-literal value to avoid that.
+        string expressionString = exp.ToString();
+
+        // So, that's an expression, but what about regular expressions (aka. RegEx)?
+        // This entire project is meant to be needlessly convoluted and overly complicated,
+        // and if there's one thing often cited as being complicated, it's RegEx.
+
+        // Below you see the string "\w+\s(?<_>\+)\s\d", written using 16-bit Unicode character literal.
+        // That is, a RegEx pattern which matches the following sequence:
+        // - One or more word-characters
+        // - A whitespace character
+        // - The character '+' (put into a group named '_')
+        // - A whitespace character
+        // - A single digit
+        // And it just so happens that this would match "number + 2", and put the plus character into group 1. How convenient.
+
+        // Note: Because this string is used as a RegEx pattern by Regex.Match, Visual Studio will apply RegEx syntax coloring to the Unicode literals,
+        // exactly like it would if the string was written normally. That's pretty groovy (not the Apache language).
+        const string pattern = "\u005C\u0077\u002B\u005C\u0073\u0028\u003F\u003C\u005F\u003E\u005C\u002B\u0029\u005C\u0073\u005C\u0064";
+
+        // Good heavens, would you look at the time? It's RegEx-o'-clock!
+        Match match = Regex.Match(expressionString, pattern);
+
+        // We now have the character '+' from our expression in the '_' match group, which we can simply extract.
+        string plus = match.Groups["_"].Value;
+
+        // Now to turn a plus into a space. Luckily for us, that's exactly how URLs encode strings.
+        // So we can just use WebUtility to "decode" the plus into a space, and grab the first (and only) character from that string.
+        return WebUtility.UrlDecode(plus)[0];
     }
 
     /// <summary>
