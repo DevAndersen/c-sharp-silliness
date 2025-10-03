@@ -130,7 +130,7 @@ file static partial class Program
             await using var var = await Task.Run(static async () =>
             {
                 // This is, obviously, the number 5.
-                nint nint = default(var) + await sizeof(int) | default(int) with { };
+                nint nint = default(var) + await sizeof(int) with { };
 
                 // This is neither asynchronous nor a variable of a compiler-inferred type, despite using the words "async" and "var".
                 // But the "default" (which is a non-contextual keyword) does what you'd expect (assuming you expect "async" to be the name of a type).
