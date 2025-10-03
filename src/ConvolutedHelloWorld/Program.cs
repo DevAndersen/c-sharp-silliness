@@ -173,14 +173,14 @@ file static partial class Program
         // This entire project is meant to be needlessly convoluted and overly complicated,
         // and if there's one thing often cited as being complicated, it's RegEx.
 
-        // Below you see the string "\w+\s(?<_>\+)\s\d", written using 16-bit Unicode character literal.
+        // Below you see the string "\w+\s(?<_>\+)\s\d", written using 16-bit Unicode character literals.
         // That is, a RegEx pattern which matches the following sequence:
         // - One or more word-characters
         // - A whitespace character
-        // - The character '+' (put into a group named '_')
+        // - The character "+" (put into a group named "_")
         // - A whitespace character
         // - A single digit
-        // And it just so happens that this would match "number + 2", and put the plus character into group 1. How convenient.
+        // And it just so happens that this would match "number + 2", and put the plus character into a group for easy extraction. How convenient.
 
         // Note: Because this string is used as a RegEx pattern by Regex.Match, Visual Studio will apply RegEx syntax coloring to the Unicode literals,
         // exactly like it would if the string was written normally. That's pretty groovy (not the Apache language).
@@ -189,12 +189,12 @@ file static partial class Program
         // Good heavens, would you look at the time? It's RegEx-o'-clock!
         Match match = Regex.Match(expressionString, pattern);
 
-        // We now have the character '+' from our expression, stored in the '_' match group, which we can simply extract.
+        // We now have the string "+" from our expression, stored in the "_" match group, which we can simply extract.
         // I also used a bit of string interpolation, because now it looks like a face. "{'_'}"
         string plus = match.Groups[$"{'_'}"].Value;
 
-        // Now to turn a plus into a space. Luckily for us, that's exactly how URLs encode strings.
-        // So we can just use WebUtility to "decode" the plus into a space, and grab the first (and only) character from that string.
+        // Now to turn a plus into a space. Luckily for us, that's exactly how URLs encode spaces.
+        // So we can just use WebUtility to decode the plus into a space, grab the first (and only) character from that string, and we're done.
         return WebUtility.UrlDecode(plus)[0];
     }
 
@@ -305,12 +305,12 @@ file static partial class Program
         Span<char> span = MemoryMarshal.AsMemory(readOnlyMemory).Span;
 
         // And finally, we'll change the first character in the span to the lower-case letter 'r'.
-        // String mutation is a big no-no in .NET, so this technically qualifies as data corruption.
-        // Luckily, we don't use this string elsewhere, so we're technically good.
+        // String mutation is a big no-no in .NET, so this technically qualifies as memory corruption.
+        // Luckily, we don't use this string elsewhere, so we're good.
         span[0] = 'r';
 
         // And the cherry on top: because the string is known at compile time, it gets interned.
-        // This means that all strings with that exact same content will all point to the same location in memory.
+        // This means that all strings with that exact value will all point to the same location in memory.
         // And since we just mutated the underlying buffer, that means we implicitly also mutated all other instances of that string. Spooky action at a distance!
         // So while it looks like we are returning a 'P', we are actually returning an 'r'. Highly illegal stuff, don't tell your parents.
         return "Please don't mutate me"[0];
