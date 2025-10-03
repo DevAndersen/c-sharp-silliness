@@ -49,7 +49,7 @@ file static partial class Program
     }
 
     /// <summary>
-    /// Topic: Text parsing, text normalization.
+    /// Topic: Atypical number parsing, text normalization.
     /// </summary>
     /// <returns></returns>
     private static char O1()
