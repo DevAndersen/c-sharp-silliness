@@ -2,6 +2,7 @@
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
 
+// This is, more or less, the using directives you'd expect to see in a typical C# "Hello, World!" application, right?
 using Microsoft.Win32.SafeHandles;
 using System.Buffers.Binary;
 using System.Globalization;
