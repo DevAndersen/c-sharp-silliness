@@ -22,7 +22,7 @@ Approximating a 1-second sleep by passing a very large `struct` around.
 
 ### [ConvolutedHelloWorld](./src/ConvolutedHelloWorld)
 
-A needlessly complicated and convoluted way of printing `"Hello, world!"` to the console.
+A needlessly complicated and convoluted way of printing `Hello, world!` to the console.
 
 ## Failed projects
 
