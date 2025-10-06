@@ -6,6 +6,7 @@
 using Microsoft.Win32.SafeHandles;
 using System.Buffers.Binary;
 using System.Globalization;
+using System.IO.Compression;
 using System.Linq.Expressions;
 using System.Net;
 using System.Reflection;
@@ -21,20 +22,44 @@ PrintLine([.. Hell(), O1(), Comma(), Space(), W(), O2(), R(), .. Ld(), Exclamati
 file static partial class Program
 {
     /// <summary>
-    /// Topic: TBD.
+    /// Topic: Hashing, compression, endianness, Unicode case bit.
     /// </summary>
     /// <returns></returns>
     private static char[] Hell()
     {
-        int veryBigNumber = 270_291_474; // Todo: Find a way to land at this number.
+        // Many programs have secrets. Passwords, keys, tokens, the sort.
+        // Frankly, I think that's a load of rubbish. Everything should be open source, including the secrets. Especially the secrets.
+        // In the spirit of openness, I'll start. Here' my secret:
+        string secret = "H4sIAAAAAAAAChOQCRICAAmcVR8EAAAA";
 
-        // This gives us the number 270,291,474, which, if represented as a 32-bit integer value,
-        // can be hashed using MD5 to yield a digest that, if read as UTF-8 text, just so happens to start with the four letters "hell".
-        // How do I know this? Because I bruteforced it. Took one of my CPU cores around 40 seconds before it found a match.
+        // All those A's makes it look like it a blood curdling scream of terror. But let's not dwell on why my code might be screaming.
+        // Anyways, it's a series of base-64 encoded bytes, so let's decode them.
+        byte[] bytes = Convert.FromBase64String(secret);
+
+        // Now, I of course want to be concious of space, which is why the actual secret hase been gzip compressed.
+        // Let's unzip it, and see what's inside.
+        using MemoryStream input = new MemoryStream(bytes);
+        using MemoryStream output = new MemoryStream();
+        using GZipStream gZipStream = new GZipStream(input, CompressionMode.Decompress);
+        gZipStream.CopyTo(output);
+
+        // The uncompressed value is just four bytes, which is smaller than the "compressed" string.
+        // You might call this "an unnecessary waste of time", but I'd argue it's "obfuscated and creative".
+        // Anyways, it's a 4-byte value, so let's read it as a 32-bit integer. And since secrets are often transferred over a network,
+        // let's read it as a big endian number. Gotta read things in the right order.
+        int veryBigNumber = BinaryPrimitives.ReadInt32BigEndian(output.ToArray());
+
+        // This gives us the number 270,291,474. I checked online, but couldn't find anything interesting about it.
+        // In memory, this is represented as a 32-bit integer value, stored in little endian.
+        // If we use MD5 to hash those four bytes, it yields a digest that, if read as UTF-8 text, just so happens to start with the four letters "hell".
+        // What a coincodence, how could I have predicted this? Because I bruteforced it. Took one of my CPU cores around 40 seconds before it found a match.
+        // So in case you need a demonstartion of why "reversing" a hash is a hurdle, there you go.
         // Also, having some part of the code literally return "hell" seems fitting, considering the absolute abomination that is this project.
         byte[] hellBytes = MD5.HashData(BitConverter.GetBytes(veryBigNumber));
 
-        // Now, the "h" is lower-case, so we'll need to make it upper-case.
+        // Sidenote: Don't use MD5 for anything security-related. It's been deemed insecure long ago. Still decent for checksums though.
+
+        // Now, the "h" in our "hell" string is lower-case, so we'll need to make it upper-case.
         // Here we can use a really handy design feature of ASCII/Unicode: the binary difference between any
         // Latin letter's upper- and lower case variants is a single bit (the sixth bit, to be precise).
         // We can therefore take any Latin upper-case letter, XOR it with its lower-case counterpart to get the case bit,
@@ -188,6 +213,8 @@ file static partial class Program
         const string pattern = "\u005C\u0077\u002B\u005C\u0073\u0028\u003F\u003C\u005F\u003E\u005C\u002B\u0029\u005C\u0073\u005C\u0064";
 
         // Good heavens, would you look at the time? It's RegEx-o'-clock!
+        // We could have used the RegEx source generator, but then we wouldn't have the lovely pattern above within the method.
+        // It would, hmm, "distract from the creative vision of the project". Yes, that sounds sufficiently pretentious.
         Match match = Regex.Match(expressionString, pattern);
 
         // We now have the string "+" from our expression, stored in the "_" match group, which we can simply extract.
