@@ -16,11 +16,11 @@ Goals:
 
 ## Conclusion
 
-This project took significantly longer to make than expected, mostly because I wanted to try to be creative with how I implemented method.
+This project took significantly longer to make than expected, mostly because I wanted to try to be creative with how I implemented each of the methods.
 
 The aim was to write code that no sane person would ever write. If all of the methods make you go "*What is wrong with you?*", then I have succeeded in my goal.
 
-I also tried to make the comments both informative and humorous. I just wrote what felt funny in the moment, so the tone swings from "this is normal" to "this is awful".
+I also tried to make the comments both informative and humorous. I just wrote what felt funny in the moment, so the tone swings from "*this is perfectly normal*" to "*this is awful*".
 
 Looking throught he code, it looks like I managed to utilize the following:
 
@@ -54,7 +54,7 @@ Looking throught he code, it looks like I managed to utilize the following:
 
 I'm reasonably satisfied with the variety in techniques used, as I tried to avoid using the same tricks over and over again (ignoring integer-to-character conversations, seeing as they're kinda necessary).
 
-My favorite part was abusing contextual keywords and duck typing. I am equal parts proud of, and disgusted by, managing to make the following code valid C#:
+My favorite part was abusing contextual keywords and duck typing. I am equal parts proud of, and disgusted by, managing to turn the following code into valid C#:
 
 ```csharp
 await foreach (int async in await await (int)nint)
@@ -63,8 +63,8 @@ await foreach (int async in await await (int)nint)
 }
 ```
 
-The `Hell` method, which was the first method I started working on, ironically took the longest because I stopped when I had a managed to turn 270,291,474 into "hell", but that seemed a bit too simple to just start with a big number.
+The `Hell` method, which was the first method I started working on, ironically took the longest because I stopped halfway through when I had a managed to turn 270,291,474 into "hell", but starting with some big random number that seemed a bit too simple.
 
-This project also spawned [`InstanceOfVoid`](../InstanceOfVoid). I initially planned on using `System.Void` to somehow arrive at a space character (void to space, seemed funny). But it turns out that merely looking at that type funny is enough to make the compiler and runtime stare angrily at you while cracking their knuckles. So I had to settle with URL encoding (which then necessitated a clever way of getting a plus character).
+This project also spawned [`InstanceOfVoid`](../InstanceOfVoid). I initially planned on using `System.Void` to somehow arrive at a space character (void to space, seemed funny). But it turns out that merely looking at that type funny is enough to make the compiler and runtime stare angrily at you while cracking their knuckles. So I had to settle with URL encoding (which then necessitated coming up with a creative way of getting a plus character).
 
 But ultimately, the project succeeded, and I'm satisfied with the result.
