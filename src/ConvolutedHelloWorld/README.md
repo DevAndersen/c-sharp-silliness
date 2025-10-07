@@ -18,6 +18,8 @@ Goals:
 
 This project took significantly longer to make than expected, mostly because I wanted to try to be creative with how I implemented method.
 
+The aim was to write code that no sane person would ever write. If all of the methods make you go "*What is wrong with you?*", then I have succeeded in my goal.
+
 I also tried to make the comments both informative and humorous. I just wrote what felt funny in the moment, so the tone swings from "this is normal" to "this is awful".
 
 Looking throught he code, it looks like I managed to utilize the following:
