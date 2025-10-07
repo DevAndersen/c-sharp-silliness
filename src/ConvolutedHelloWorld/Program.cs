@@ -47,10 +47,11 @@ file static partial class Program
         // You might call this "an unnecessary waste of time", but I'd argue it's "obfuscated and creative".
         // Anyways, it's a 4-byte value, so let's read it as a 32-bit integer. And since secrets are often transferred over a network,
         // let's read it as a big endian number. Gotta read things in the right order.
+        // This gives us the number 270,291,474.
+        // I checked online, but couldn't find anything interesting about it. So "veryBigNumber" seems as good a name as any.
         int veryBigNumber = BinaryPrimitives.ReadInt32BigEndian(output.ToArray());
 
-        // This gives us the number 270,291,474. I checked online, but couldn't find anything interesting about it.
-        // In memory, this is represented as a 32-bit integer value, stored in little endian.
+        // In memory, this is represented as a (little endian) 32-bit integer value.
         // If we use MD5 to hash those four bytes, it yields a digest that, if read as UTF-8 text, just so happens to start with the four letters "hell".
         // What a coincodence, how could I have predicted this? Because I bruteforced it. Took one of my CPU cores around 40 seconds before it found a match.
         // So in case you need a demonstartion of why "reversing" a hash is a hurdle, there you go.
