@@ -42,7 +42,7 @@ Looking throught he code, it looks like I managed to utilize the following:
 - URL encoding
 - Assembly creation at runtime
 - Implementing a method body with IL emit
-- IEEE 754 (Standard for Floating-Point Arithmetic) bit layout
+- IEEE 754 (floating point standard) bit layout
 - Indexers
 - String mutation
 - Integer literals (hexadecimal, binary)

@@ -281,7 +281,7 @@ file static partial class Program
     }
 
     /// <summary>
-    /// Topic: IEEE 754, bitwise operators.
+    /// Topic: IEEE 754 (floating point standard), bitwise operators.
     /// </summary>
     /// <returns></returns>
     private static char O2()
