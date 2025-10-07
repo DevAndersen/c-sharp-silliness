@@ -187,7 +187,7 @@ file static partial class Program
     {
         // Expressions are pretty nifty. They essentially describe logic in an abstract way,
         // which you can then compile into an invokable delegate, or you can parse it and use it
-        // elsewhere. For example, Entity Framework tarnslates expressions to SQL.
+        // elsewhere. For example, Entity Framework translates expressions to SQL.
         // Here is a simple expression, which just adds w to the input number.
         Expression<Func<int, int>> exp = (number) => number + 2;
 
