@@ -1,4 +1,4 @@
-﻿// You know it's gonna be good when the code begins by suppressing several warnings.
+// You know it's gonna be good when the code begins by suppressing several warnings.
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
 
@@ -32,8 +32,9 @@ file static partial class Program
         // In the spirit of openness, I'll start. Here' my secret:
         string secret = "H4sIAAAAAAAAChOQCRICAAmcVR8EAAAA";
 
-        // All those A's makes it look like it a blood curdling scream of terror. But let's not dwell on why my code might be screaming.
-        // Anyways, it's a series of base-64 encoded bytes, so let's decode them.
+        // All those A's makes it look like a blood curdling scream.
+        // But let's not dwell on why my code might be screaming in agony.
+        // Regardless, the secret is a series of base-64 encoded bytes, so let's decode them.
         byte[] bytes = Convert.FromBase64String(secret);
 
         // Now, I of course want to be concious of space, which is why the actual secret hase been gzip compressed.
