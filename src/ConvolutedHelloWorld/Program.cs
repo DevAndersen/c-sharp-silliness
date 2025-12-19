@@ -89,7 +89,7 @@ file static partial class Program
         // And, because underscore is a valid identifier, this works even though the type "dynamic" doesn't have a member named "_".
 
         // Sidenote: Unless you're a professional madman (like I am), you should never use dynamic.
-        // It causes far more problems than it solves, makes debugging and troubleshooting needlessly painful, and there are always better alternatives
+        // It causes far more problems than it solves, makes debugging and troubleshooting needlessly painful, and there are always better alternatives.
         dynamic dyn;
         string underscore = nameof(dyn._);
 
@@ -163,7 +163,7 @@ file static partial class Program
                 // This is neither asynchronous nor a variable of a compiler-inferred type, despite using the words "async" and "var".
                 // But the "default" (which is a non-contextual keyword) does what you'd expect (assuming you expect "async" to be the name of a type).
                 async var = default;
-                
+
                 // This is basically just a wonky looking for-loop. Sort of. Trust me, it just works.
                 await foreach (int async in await await (int)nint)
                 {
@@ -271,7 +271,14 @@ file static partial class Program
 
         // With all that done, we simply need to invoke our newly generated method, and return the returned char.
         // Let's also suppress those pesky null warnings. Shut up, compiler, I know what I'm doing!
-        // Fun fact: the null-forgiving operator is informally known as the "damn-it" or "dammit" operator, since it's essentially telling the compiler "just do it, dammit".
+
+        // Because this can technically be null, we can use the null-forgiving operator '!' to suppress the nullability warning.
+        // Generally speaking, the compiler knows better than you do, so don't just slap exclamation marks all over your code.
+        // Doing so doesn't solve anything, it just hides the warnings (which should be treated as errors).
+        // Only use it when you actually do know better, for example in chained LINQ methods where the analyzer can't keep track of null checks in previous methods.
+
+        // Fun fact: the null-forgiving operator is informally known as the "damn-it" or "dammit" operator,
+        // since it's essentially telling the compiler "just do it, dammit".
         // Microsoft might deny this, but we all know it's the truth.
         return (char)type.GetMethod(MethodName)!.Invoke(null, [])!;
 
