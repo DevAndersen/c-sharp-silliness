@@ -24,6 +24,10 @@ Approximating a 1-second sleep by repeatedly passing a very large `struct` by va
 
 A needlessly complicated and convoluted way of printing `Hello, world!` to the console.
 
+### [SquigglySyntax](./src/SquigglySyntax)
+
+Making horrible looking syntax by abusing unary operator overloading.
+
 ## Failed projects
 
 These are projects that did not work out (which is probably for the best).

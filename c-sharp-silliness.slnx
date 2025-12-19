@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="src/ByValueSleep/ByValueSleep.csproj" />
+  <Project Path="src/ConvolutedHelloWorld/ConvolutedHelloWorld.csproj" />
+  <Project Path="src/DateTimePastMaxValue/DateTimePastMaxValue.csproj" />
+  <Project Path="src/InstanceOfVoid/InstanceOfVoid.csproj" />
+  <Project Path="src/NegativeFieldOffset/NegativeFieldOffset.csproj" />
+  <Project Path="src/SquigglySyntax/SquigglySyntax.csproj" />
+  <Project Path="src/StringMutability/StringMutability.csproj" />
+  <Project Path="src/StringOverwriting/StringOverwriting.csproj" />
+</Solution>
