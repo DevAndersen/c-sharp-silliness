@@ -1,4 +1,4 @@
-# C# Silliness
+﻿# C# Silliness
 
 This repository contains various small projects that demonstrate ~~awful~~ *creative* things one can do with C#.
 
@@ -27,6 +27,10 @@ A needlessly complicated and convoluted way of printing `Hello, world!` to the c
 ### [SquigglySyntax](./src/SquigglySyntax)
 
 Making horrible looking syntax by abusing unary operator overloading.
+
+### [MusicalCSharp](./src/MusicalCSharp)
+
+Making a `.wav` file from scratch that plays the musical note C♯.
 
 ## Failed projects
 
