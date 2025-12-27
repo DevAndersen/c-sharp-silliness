@@ -1,8 +1,8 @@
 ﻿# MusicalCSharp
 
-Ever wondered how `.wav` audio files work? No? Neither had I, until the idea suddenly entered my mind.
+C# is named after a musical note, C♯. But have you ever wondered how `.wav` audio files work? No? Neither had I, until the idea suddenly entered my mind.
 
-I then thought: can I, someone with zero knowledge or experience in the world of music, make an audio file that plays the C♯ musical note, entirely from scratch?
+So, as someone with zero knowledge or experience in the world of music, how hard can it be to make a `.wav` file from scratch, that plays the C♯ musical note?
 
 ## The `.wav` format
 
@@ -58,7 +58,7 @@ The general idea:
 
 ## Conclusion
 
-TL;DR: It kinda works? I'm no musician, but to my untrained ear, it does sound somewhat like what I can hear online if I try to find the C♯ note played on a piano or similar.
+It kinda works? I'm no musician, but to my untrained ear, it does sound somewhat like what I can hear online if I try to find the C♯ note played on a piano or similar.
 
 I had hoped for something more like a piano, but what I got sounds more like a simple string instrument. Not optimal, but I'll take it.
 
